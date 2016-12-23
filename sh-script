@@ -1,0 +1,40 @@
+#!/bin/bash
+# ftp amazon_crawler to home folder
+# In vim use :set ff=unix and then save the file, or :set ff=dos to get DOS formatting again.
+# This fix "/bin/bash^M: bad interpreter: No such file or directory"
+sudo apt update
+sudo apt install redis-server -y
+sudo apt install mysql-server -y
+#sudo apt install postgresql libpq-dev postgresql-client postgresql-client-common -y
+
+sudo apt install python3-pip -y
+sudo apt install python-dev -y
+sudo apt install libssl-dev -y
+pip3 install --upgrade pip
+sudo pip3 install -r amzcrawler/requirements.txt
+echo "create database amazon_crawler" | mysql -u root -p
+python3 amzcrawler/amzcrawler/models.py
+
+
+# Site setup
+# http://askubuntu.com/questions/764782/install-laravel-5-on-ubuntu-16-04
+sudo apt install apache2 php libapache2-mod-php php-mysql -y
+sudo apt install zip -y
+sudo apt install composer -y
+sudo echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
+
+#sudo composer global require "laravel/installer"
+sudo apt install php-zip -y
+sudo apt install php-mbstring -y
+sudo apt install php-dom -y
+cd /var/www/html
+sudo composer create-project laravel/laravel tbmoney --prefer-dist
+sudo chmod -R 777 tbmoney/
+# Upload app, resources, router and .env
+sudo vi /etc/apache2/sites-available/000-default.conf
+# change DocumentRoot /var/www/html to DocumentRoot /var/www/html/tbmoney/public
+sudo service apache2 reload
+
+screen -S crawler
+cd ~/amzcrawler
+# scrapy crawl tradeins --set JOBDIR=crawl1
