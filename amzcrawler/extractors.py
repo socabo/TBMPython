@@ -4,36 +4,6 @@ from html.parser import HTMLParser
 
 htmlparser = HTMLParser()
 
-
-def get_sidebar_links(page):
-
-    # https://www.amazon.com/s/ref=sr_nr_n_0?fst=as%3Aoff&rh=n%3A283155%2Ck%3Atextbook&
-    #                                keywords=textbook&ie=UTF8&qid=1480598393&rnid=2941120011
-    # https://www.amazon.com/gp/search/ref=sr_pg_1?fst=as%3Aoff&rh=n%3A283155%2Ck%3Atextbook&
-    #                               keywords=textbook&ie=UTF8&qid=1480598491&spIA=1451116594
-
-
-    count = 0
-
-    # look for subcategory links on this page
-    #subcategories = page.findAll("div", "categoryRefinementsSection")  # downward arrow graphics
-    #subcategories.extend(page.findAll("li", "sub-categories__list__item"))  # carousel hover menu
-    sidebar = page.find("div", "categoryRefinementsSection")
-    if sidebar:
-        subcategories = sidebar.findAll("li", attrs={"class": None})  # left sidebar without 'Any Category' link
-
-    for subcategory in subcategories:
-        link = subcategory.find("a")
-        if not link:
-            continue
-        link = link["href"]
-        if link == "#":     #remove 'See More/Less' links
-            continue
-        count += 1
-        enqueue_url(link)
-
-    return count
-
 def get_title(item):
     title = item.xpath('.//h2//@data-attribute').extract_first()
     if title:
@@ -45,7 +15,7 @@ def get_title(item):
 
 
 def get_url(item):
-    url = item.css('.s-access-detail-page').xpath('.//@href').extract_first()
+    url = item.css('.a-text-normal.s-access-detail-page').xpath('./@href').extract_first()
     if url:
         return url
     else:
