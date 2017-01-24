@@ -1,6 +1,7 @@
 from . import settings
 import csv
 from datetime import datetime
+from twilio.rest import Client
 
 import pymysql
 conn=pymysql.connect(database=settings.database, host=settings.host, user=settings.user, password=settings.password, charset='utf8',
@@ -11,12 +12,12 @@ conn=pymysql.connect(database=settings.database, host=settings.host, user=settin
 
 cur = conn.cursor()
 
-def send_sms_report(good_tradein_count):
+def send_sms_report(good_tradein_count, crawl_duration, pages_per_second):
     
     client = Client(settings.account_sid, settings.auth_token)
 
     message = client.messages.create(to=settings.to_number, from_=settings.from_number,
-                                         body="Done. Found {} good tradeins.".format(good_tradein_count))
+                                         body="Done. Found %s good tradeins in %s. Crawled %.3f pages/second." % (good_tradein_count, crawl_duration, pages_per_second))
 
 
 def load_csv2db():

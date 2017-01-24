@@ -3,7 +3,6 @@
 # In vim use :set ff=unix and then save the file, or :set ff=dos to get DOS formatting again.
 # This fix "/bin/bash^M: bad interpreter: No such file or directory"
 sudo apt update
-sudo apt install redis-server -y
 sudo apt install mysql-server -y
 #sudo apt install postgresql libpq-dev postgresql-client postgresql-client-common -y
 
@@ -35,6 +34,6 @@ sudo vi /etc/apache2/sites-available/000-default.conf
 # change DocumentRoot /var/www/html to DocumentRoot /var/www/html/tbmoney/public
 sudo service apache2 reload
 
+cd /home/ubuntu/amzcrawler
 screen -S crawler
-cd ~/amzcrawler
 # scrapy crawl tradeins --set JOBDIR=crawl1

@@ -74,13 +74,13 @@ if __name__ == '__main__':
     cur.execute("DROP TABLE IF EXISTS found_books")
     cur.execute("""CREATE TABLE found_books (
         id              serial PRIMARY KEY,
-        title           varchar(2056),
-        product_url     varchar(2056),
-        listing_url     varchar(2056),
+        title           varchar(100),
+        product_url     varchar(250) NOT NULL UNIQUE,
+        listing_url     varchar(250),
         price           varchar(128),
         price_used      varchar(128),
         price_tradein   varchar(128),
-        primary_img     varchar(2056),
+        primary_img     varchar(250) NOT NULL UNIQUE,
         crawl_time      timestamp
     ) 
     ENGINE=InnoDB 

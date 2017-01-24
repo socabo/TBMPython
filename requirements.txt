@@ -1,3 +1,3 @@
 scrapy
-twilio==6.0rc10
-pymsql
+twilio==6.0rc11
+pymysql
